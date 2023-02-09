@@ -1,0 +1,100 @@
+{
+  "name": "nodetses6babel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src --extensions \".ts,.js\" --out-dir dist --copy-files",
+    "ci": "pnpm run cpy:ci && pnpm run ts:check && pnpm run lint",
+    "clean": "rimraf dist/src/*",
+    "cpy:ci": "cp .env.dev .env",
+    "start": "node dist/app.js",
+    "start:dev": "nodemon",
+    "lint": "eslint -c .eslintrc.js \"{src,apps,libs,test}/**/*.ts\"",
+    "lint:fix": "eslint -c .eslintrc.js \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "pre:commit": "lint-staged",
+    "pre:check": "pnpm ts:check && pnpm lint",
+    "prepare": "husky install",
+    "test": "jest",
+    "test:cov": "jest --coverage",
+    "ts:check": "tsc -p tsconfig.build.json --noEmit",
+    "test:watch": "jest --watch --silent --coverage=false",
+    "test:ci": "jest --run-in-band --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config test/jest-e2e.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoxnnyABarriosC/nodeTsEs6Babel.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RoxnnyABarriosC/nodeTsEs6Babel/issues"
+  },
+  "homepage": "https://github.com/RoxnnyABarriosC/nodeTsEs6Babel#readme",
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/node": "^7.20.7",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-numeric-separator": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
+    "@commitlint/cli": "^17.2.0",
+    "@commitlint/config-conventional": "^17.2.0",
+    "@types/jest": "^29.4.0",
+    "@types/node": "^18.13.0",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "eslint": "^8.33.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "husky": "^8.0.3",
+    "jest-environment-jsdom": "^28.1.3",
+    "jest-environment-node": "^28.1.3",
+    "jest-mock-extended": "^2.0.7",
+    "lint-staged": "^13.1.1",
+    "nodemon": "^2.0.20",
+    "rimraf": "^3.0.2",
+    "source-map-support": "^0.5.21",
+    "supertest": "^6.3.1",
+    "ts-jest": "28.0.8",
+    "ts-loader": "^9.4.1",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "4.1.0",
+    "typescript": "^4.8.4"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts",
+      "node"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "verbose": true,
+    "testTimeout": 16000
+  },
+  "engines": {
+    "node": ">=16.*"
+  }
+}
