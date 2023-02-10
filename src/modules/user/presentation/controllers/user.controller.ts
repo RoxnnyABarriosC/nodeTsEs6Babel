@@ -5,6 +5,7 @@ import { DtoValidator } from '../../../../shared/presentation/shared/dto-validat
 import { Responder } from '../../../../shared/presentation/shared/responder';
 import { SaveUserUseCase } from '../../domain/useCases/save-user.useCase';
 import { SaveUserDto } from '../dtos/save-user.dto';
+import { UserTransformer } from '../transformers/user.transform';
 
 type Dependencies = {
     saveUserUseCase: SaveUserUseCase
@@ -28,6 +29,6 @@ export default class UserController
         const dto = new SaveUserDto(req.body);
         await DtoValidator.handle(dto);
         const data = await this.saveUseCase.handle(dto);
-        return await this.responder.send(data, req, res, StatusCode.HTTP_CREATED);
+        return await this.responder.send(data, req, res, StatusCode.HTTP_CREATED, new UserTransformer());
     }
 }

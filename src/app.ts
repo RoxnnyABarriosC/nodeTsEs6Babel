@@ -11,7 +11,11 @@ import helmet from 'helmet';
 import hpropagate from 'hpropagate';
 import * as process from 'process';
 import { configuration } from './config/configuration';
+import { UserService } from './modules/user/domain/services/user.service';
 import { SaveUserUseCase } from './modules/user/domain/useCases/save-user.useCase';
+import { UserRepository } from './modules/user/infrastructure/repositories/user-repository.service';
+import { UniqueService } from './shared/infrastructure/services/unique.service';
+import { DbCreateConnection } from './shared/infrastructure/shared/db-create-connection';
 import { LoggerMiddleware } from './shared/presentation/middlewares/logger.middleware';
 import { RedirectRouteNotFoundMiddleware } from './shared/presentation/middlewares/redirect-route-not-found.middleware';
 import { ThrottleMiddleware } from './shared/presentation/middlewares/throttle.middleware';
@@ -24,13 +28,21 @@ async function bootstrap(): Promise<string>
 {
     validateEnv(process.env);
 
-    const { server } = configuration();
+    const { server, db } = configuration();
+
+    const _db = new DbCreateConnection(db);
+
+    await _db.initConfig();
+    await _db.create();
 
     hpropagate({ propagateInResponses: true });
 
     const container = createContainer()
         .register({
-            saveUserUseCase: asClass(SaveUserUseCase)
+            saveUserUseCase: asClass(SaveUserUseCase),
+            userRepository: asClass(UserRepository).singleton(),
+            userService: asClass(UserService).singleton(),
+            uniqueService: asClass(UniqueService).singleton()
         });
 
     const whitelist = ['http://localhost:3000'];

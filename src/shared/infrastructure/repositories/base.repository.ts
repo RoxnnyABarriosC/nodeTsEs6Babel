@@ -1,5 +1,6 @@
-import { FindOneOptions, In, ObjectLiteral, Repository } from 'typeorm';
+import { EntitySchema, FindOneOptions, In, ObjectLiteral, Repository } from 'typeorm';
 import { NotFoundException } from '../../exceptions/not-found.exception';
+import { dataSource } from '../shared/db-create-connection';
 import { ByOptionsInterface } from './by-options.interface';
 
 export abstract class BaseRepository<T extends ObjectLiteral>
@@ -7,10 +8,10 @@ export abstract class BaseRepository<T extends ObjectLiteral>
     protected readonly entityName: string;
     protected readonly repository: Repository<T>;
 
-    protected constructor(entityName: string, repository: Repository<T>)
+    protected constructor(entityName: string, schema: EntitySchema)
     {
         this.entityName = entityName;
-        this.repository = repository;
+        this.repository = dataSource.getRepository<T>(schema);
     }
 
     async save(entity: T): Promise<T>

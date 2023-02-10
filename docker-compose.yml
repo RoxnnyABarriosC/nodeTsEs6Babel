@@ -10,9 +10,9 @@ services:
     ports:
       - "5433:5432"
     environment:
-      - POSTGRES_USER=nodeTsEs6Babel
-      - POSTGRES_DB=nodeTsEs6Babel
-      - POSTGRES_PASSWORD=nodeTsEs6Babel
+      - POSTGRES_USER=nodetses6babel
+      - POSTGRES_DB=nodetses6babel
+      - POSTGRES_PASSWORD=nodetses6babel
     volumes:
       - data:/var/lib/postgresql/data
     networks:
