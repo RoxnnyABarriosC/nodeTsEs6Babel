@@ -27,7 +27,7 @@ export class Responder
         if (request)
         {
             metadata = {
-                refreshToken: request.refreshToken
+                // refreshToken: request.refreshToken
             };
         }
 

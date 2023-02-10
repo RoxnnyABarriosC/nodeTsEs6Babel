@@ -18,6 +18,7 @@ export class UserTransform extends Transformer
             gender: user.gender,
             enable: user.enable,
             verify: user.verify,
+            isSuperAdmin: user.isSuperAdmin,
             createdAt: dayjs(user.createdAt).utc().unix(),
             updatedAt: dayjs(user.updatedAt).utc().unix(),
             deletedAt: dayjs(user.deletedAt).utc().unix()

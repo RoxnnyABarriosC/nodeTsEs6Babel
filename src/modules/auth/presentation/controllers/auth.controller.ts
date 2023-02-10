@@ -71,34 +71,22 @@ export default class AuthController
             {
                 expires: dayjs.unix(data.getExpires()).toDate(),
                 maxAge: data.getExpires(),
-                path: `${this.config.server.prefix}${this.config.server.version}`,
+                path: `${this.config.server.prefix}${this.config.server.version}/auth`,
                 secure: this.config.setCookieSecure,
                 httpOnly: true,
-                sameSite: this.config.setCookieSameSite as any
+                sameSite: this.config.setCookieSameSite
             });
 
         return await this.responder.send(data, req, res, StatusCode.HTTP_CREATED, new AuthTransform());
     }
 
-    @PUT()
-    @route('/resiter')
+    @POST()
+    @route('/register')
     async register(req: Request, res: Response)
     {
         const dto = new RegisterDto(req.body);
         await DtoValidator.handle([dto]);
-        const data = await this.loginUseCase.handle(dto);
-
-        res.cookie(
-            'refreshToken',
-            data.getRefreshHash(),
-            {
-                expires: dayjs.unix(data.getExpires()).toDate(),
-                maxAge: data.getExpires(),
-                path: `${this.config.server.prefix}${this.config.server.version}`,
-                secure: this.config.setCookieSecure,
-                httpOnly: true,
-                sameSite: this.config.setCookieSameSite as any
-            });
+        const data = await this.registerUseCase.handle(dto);
 
         return await this.responder.send(data, req, res, StatusCode.HTTP_CREATED, new DefaultTransform());
     }
@@ -119,7 +107,7 @@ export default class AuthController
                 path: `${this.config.server.prefix}${this.config.server.version}`,
                 secure: this.config.setCookieSecure,
                 httpOnly: true,
-                sameSite: this.config.setCookieSameSite as any
+                sameSite: this.config.setCookieSameSite
             });
 
         return await this.responder.send(data, req, res, StatusCode.HTTP_OK, new DefaultTransform());
@@ -138,10 +126,10 @@ export default class AuthController
             {
                 expires: dayjs.unix(data.getExpires()).toDate(),
                 maxAge: data.getExpires(),
-                path: `${this.config.server.prefix}${this.config.server.version}`,
+                path: `${this.config.server.prefix}${this.config.server.version}/auth`,
                 secure: this.config.setCookieSecure,
                 httpOnly: true,
-                sameSite: this.config.setCookieSameSite as any
+                sameSite: this.config.setCookieSameSite
             });
 
         return await this.responder.send(data, req, res, StatusCode.HTTP_CREATED, new AuthTransform());

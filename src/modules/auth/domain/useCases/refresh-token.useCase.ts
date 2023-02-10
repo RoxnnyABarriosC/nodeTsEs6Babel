@@ -26,7 +26,7 @@ export class RefreshTokenUseCase
         const tokenDecode = this.authService.decodeToken(refreshToken, false);
 
         const email = tokenDecode.email;
-        const tokenId = tokenDecode.id;
+        // const tokenId = tokenDecode.id;
 
         const user = await this.repository.getOneByEmail(email);
         // TODO: optener el token con el id del refreshToken decodificado y setearlo en la black list de redis

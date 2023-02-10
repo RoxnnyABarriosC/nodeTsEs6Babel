@@ -54,7 +54,6 @@ async function bootstrap(): Promise<string>
 
     hpropagate({ propagateInResponses: true });
 
-
     const authModule = {
         // UseCases
         loginUseCase: asClass(LoginUseCase),
@@ -111,6 +110,8 @@ async function bootstrap(): Promise<string>
 
     const app = Express();
 
+    const prefix = `${config.server.prefix}${config.server.version}`;
+
     app
         .use(bodyParser.urlencoded({
             extended: true,
@@ -131,17 +132,20 @@ async function bootstrap(): Promise<string>
                 {
                     callback(new Error('Not allowed by CORS'));
                 }
-            } : undefined
-        }))
+            } : undefined,
+            credentials: true
+        }
+        ))
         .use(helmet())
         .use(scopePerRequest(container))
         // Loads all controllers in the `routes` folder
         // relative to the current working directory.
         // This is a glob pattern.
-        .use(`${config.server.prefix}${config.server.version}`, loadControllers('modules/**/presentation/controllers/*.controller.ts', { cwd: __dirname }))
+        .use(prefix, ThrottleMiddleware)
+        .use(prefix, loadControllers('modules/**/presentation/controllers/*.controller.ts', { cwd: __dirname }))
         .use(ErrorHandler.handle)
         .use(LoggerMiddleware)
-        .use(ThrottleMiddleware)
+
         .use(RedirectRouteNotFoundMiddleware)
         .listen(config.server.port);
 
