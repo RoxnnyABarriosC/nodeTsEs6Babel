@@ -34,4 +34,9 @@ export abstract class BaseEntity
 
         return clone;
     }
+
+    build<T = any>(partial: Partial<T>)
+    {
+        Object.assign(this, partial);
+    }
 }

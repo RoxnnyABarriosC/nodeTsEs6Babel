@@ -15,6 +15,6 @@ export class User extends BaseEntity
     constructor(partial: Partial<User>)
     {
         super();
-        Object.assign(this, partial);
+        this.build(partial);
     }
 }

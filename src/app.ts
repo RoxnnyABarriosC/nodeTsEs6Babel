@@ -13,6 +13,7 @@ import * as process from 'process';
 import { configuration } from './config/configuration';
 import { UserService } from './modules/user/domain/services/user.service';
 import { SaveUserUseCase } from './modules/user/domain/useCases/save-user.useCase';
+import { UpdateUserUseCase } from './modules/user/domain/useCases/update-user.useCase';
 import { UserRepository } from './modules/user/infrastructure/repositories/user-repository.service';
 import { UniqueService } from './shared/infrastructure/services/unique.service';
 import { DbCreateConnection } from './shared/infrastructure/shared/db-create-connection';
@@ -40,6 +41,7 @@ async function bootstrap(): Promise<string>
     const container = createContainer()
         .register({
             saveUserUseCase: asClass(SaveUserUseCase),
+            updateUserUseCase: asClass(UpdateUserUseCase),
             userRepository: asClass(UserRepository).singleton(),
             userService: asClass(UserService).singleton(),
             uniqueService: asClass(UniqueService).singleton()
