@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  db:
+    container_name: node_ts_es6_babel_db
+    restart: always
+    build:
+      context: docker/postgres/
+      dockerfile: Dockerfile
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=nodeTsEs6Babel
+      - POSTGRES_DB=nodeTsEs6Babel
+      - POSTGRES_PASSWORD=nodeTsEs6Babel
+    volumes:
+      - data:/var/lib/postgresql/data
+    networks:
+      - nodetses6babelnet
+
+networks:
+  nodetses6babelnet:
+    driver: "bridge"
+
+volumes:
+  data:
+    driver: "local"
