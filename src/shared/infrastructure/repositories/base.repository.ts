@@ -1,5 +1,5 @@
 import { EntitySchema, FindOneOptions, In, ObjectLiteral, Repository } from 'typeorm';
-import { NotFoundException } from '../../exceptions/not-found.exception';
+import { NotFoundException } from '../../domain/exceptions/not-found.exception';
 import { dataSource } from '../shared/db-create-connection';
 import { ByOptionsInterface } from './by-options.interface';
 

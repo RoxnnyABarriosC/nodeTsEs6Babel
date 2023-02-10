@@ -2,6 +2,7 @@
 import * as dotenv from 'dotenv'; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config();
 
+import * as process from 'process';
 import { ConfigInterface } from './config.interface';
 
 export const configuration = (): ConfigInterface => ({
@@ -27,5 +28,22 @@ export const configuration = (): ConfigInterface => ({
     },
     pagination: {
         limit: process.env.PAGINATION_LIMIT
+    },
+    locale: process.env.LOCALE,
+    setCookieSecure: process.env.SET_COOKIE_SECURE,
+    setCookieSameSite: process.env.SET_COOKIE_SAME_SITE as any,
+    jwt: {
+        aud: process.env.JWT_AUD,
+        iss: process.env.JWT_ISS,
+        secret: process.env.JWT_SECRET,
+        expires: process.env.JWT_EXPIRES
+    },
+    encryption: {
+        default: process.env.ENCRYPTION_DEFAULT,
+        bcrypt: {
+            type: 'bcrypt',
+            saltRounds: 10,
+            algorithm: 'HS512'
+        }
     }
 });

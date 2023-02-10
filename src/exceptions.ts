@@ -1,6 +1,6 @@
 import { StatusCode } from '@digichanges/shared-experience';
-import { NotFoundException } from './shared/exceptions/not-found.exception';
-import { UniqueAttributeException } from './shared/exceptions/unique-attribute.exception';
+import { NotFoundException } from './shared/domain/exceptions/not-found.exception';
+import { UniqueAttributeException } from './shared/domain/exceptions/unique-attribute.exception';
 
 const exceptions = {
     [NotFoundException.name]: StatusCode.HTTP_NOT_FOUND,

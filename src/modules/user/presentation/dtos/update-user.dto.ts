@@ -1,12 +1,17 @@
 import { IsBoolean } from 'class-validator';
-import { SaveUserDto } from './save-user.dto';
+import { UserDto } from './user.dto';
 
-
-export class UpdateUserDto extends SaveUserDto
+export class UpdateUserDto extends UserDto
 {
     @IsBoolean()
     public readonly enable: boolean;
 
     @IsBoolean()
     public readonly verify: string;
+
+    constructor(data: UpdateUserDto)
+    {
+        super();
+        Object.assign(this, data);
+    }
 }

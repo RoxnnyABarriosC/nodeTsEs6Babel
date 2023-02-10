@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { applyDecorators } from '../../decorators/apply.decorator';
+import { applyDecorators } from '../../infrastructure/decorators/apply.decorator';
 
 export function UnixDate()
 {

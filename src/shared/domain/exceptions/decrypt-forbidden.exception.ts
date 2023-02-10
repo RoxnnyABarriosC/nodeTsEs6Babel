@@ -1,4 +1,4 @@
-import { Locales } from '../presentation/shared/locales';
+import { Locales } from '../../presentation/shared/locales';
 import { ErrorException } from './error.exception';
 
 export class DecryptForbiddenException extends ErrorException

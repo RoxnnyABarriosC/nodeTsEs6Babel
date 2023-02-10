@@ -1,4 +1,4 @@
-import { UniqueAttributeException } from '../../exceptions/unique-attribute.exception';
+import { UniqueAttributeException } from '../../domain/exceptions/unique-attribute.exception';
 import { BaseRepository } from '../repositories/base.repository';
 
 interface IUniqueConfig<T = any>

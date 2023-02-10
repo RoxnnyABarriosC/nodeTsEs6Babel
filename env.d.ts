@@ -1,3 +1,4 @@
+
 declare namespace NodeJS {
     interface ProcessEnv {
         NODE_ENV: string;
@@ -14,5 +15,13 @@ declare namespace NodeJS {
         DB_DATABASE: string;
         DB_TYPE: 'postgres';
         PAGINATION_LIMIT: number;
+        SET_COOKIE_SECURE: boolean;
+        SET_COOKIE_SAME_SITE: string;
+        JWT_SECRET: string;
+        JWT_EXPIRES: number;
+        JWT_ISS: string;
+        JWT_AUD: string;
+        ENCRYPTION_DEFAULT: string;
+        LOCALE: string;
     }
 }

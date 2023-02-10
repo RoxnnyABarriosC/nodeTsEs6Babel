@@ -1,5 +1,5 @@
 import { UserRepository } from '../../infrastructure/repositories/user.repository';
-import { SaveUserDto } from '../../presentation/dtos/save-user.dto';
+import { UpdateUserDto } from '../../presentation/dtos/update-user.dto';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 
@@ -19,7 +19,7 @@ export class UpdateUserUseCase
         this.service = userService;
     }
 
-    async handle(id: string, dto: SaveUserDto): Promise<User>
+    async handle(id: string, dto: UpdateUserDto): Promise<User>
     {
         const user = await this.repository.getOne(id);
 

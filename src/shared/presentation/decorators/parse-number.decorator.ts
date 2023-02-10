@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { applyDecorators } from '../../decorators/apply.decorator';
+import { applyDecorators } from '../../infrastructure/decorators/apply.decorator';
 
 export function ParseNumber()
 {

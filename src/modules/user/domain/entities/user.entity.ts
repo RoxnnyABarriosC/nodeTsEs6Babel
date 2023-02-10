@@ -1,4 +1,5 @@
 import { BaseEntity } from '../../../../shared/domain/base.entity';
+import { PasswordValueObject } from '../../../../shared/domain/valueObjects/password.valueObject';
 import GenderEnum from '../enums/gender.enum';
 
 export class User extends BaseEntity
@@ -11,6 +12,8 @@ export class User extends BaseEntity
     public birthday: Date;
     public enable = false;
     public verify = false;
+    public password: PasswordValueObject;
+    public isSuperAdmin: boolean;
 
     constructor(partial: Partial<User>)
     {

@@ -38,6 +38,23 @@ export const UserSchema = new EntitySchema<Entity<User>>({
         },
         birthday: {
             type: Date
+        },
+        password: {
+            type: String,
+            transformer: {
+                from(val: string)
+                {
+                    return val;
+                },
+                to(val: Record<string, string>)
+                {
+                    return val.value;
+                }
+            }
+        },
+        isSuperAdmin: {
+            type: Boolean,
+            default: false
         }
     }
 });

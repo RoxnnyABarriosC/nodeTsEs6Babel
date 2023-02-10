@@ -1,7 +1,7 @@
-import { Locales } from '../presentation/shared/locales';
+import { Locales } from '../../presentation/shared/locales';
 import { ErrorException } from './error.exception';
 
-export class TokenExpiredHttpException extends ErrorException
+export class TokenExpiredException extends ErrorException
 {
     constructor(name: string | any)
     {
@@ -10,6 +10,6 @@ export class TokenExpiredHttpException extends ErrorException
         super({
             message: locales.__(key, { name }),
             errorCode: key
-        }, TokenExpiredHttpException.name);
+        }, TokenExpiredException.name);
     }
 }
