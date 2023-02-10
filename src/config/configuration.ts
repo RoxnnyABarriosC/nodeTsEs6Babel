@@ -1,6 +1,10 @@
+// eslint-disable-next-line import/order
+import * as dotenv from 'dotenv'; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config();
+
 import { ConfigInterface } from './config.interface';
 
-export default (): ConfigInterface => ({
+export const configuration = (): ConfigInterface => ({
     server: {
         url: {
             api: process.env.URL_API,
