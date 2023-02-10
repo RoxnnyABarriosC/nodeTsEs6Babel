@@ -13,7 +13,11 @@ export class UserMinimalDataTransform extends Transformer
             id: user.Id,
             fullName: user.fullName,
             email: user.email,
-            gender: user.gender
+            gender: user.gender,
+            birthday: dayjs(user.birthday).utc().unix(),
+            isSuperAdmin: user.isSuperAdmin,
+            verify: user.verify,
+            enable: user.enable
         };
     }
 }

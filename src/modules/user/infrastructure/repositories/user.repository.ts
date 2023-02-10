@@ -1,3 +1,4 @@
+import { NotFoundException } from '../../../../shared/domain/exceptions/not-found.exception';
 import { BaseRepository } from '../../../../shared/infrastructure/repositories/base.repository';
 import { Paginator } from '../../../../shared/infrastructure/shared/paginator';
 import { PgSqlFilter } from '../../../../shared/infrastructure/shared/pg-sql-filter.helper';
@@ -65,5 +66,17 @@ export class UserRepository extends BaseRepository<User>
 
 
         return new Paginator(queryBuilder, criteria);
+    }
+
+    async getOneByEmail(email: string): Promise<User>
+    {
+        const user = await this.repository.findOne({ withDeleted: false, where: { email } as any });
+
+        if (!user)
+        {
+            throw new NotFoundException(this.entityName);
+        }
+
+        return user;
     }
 }

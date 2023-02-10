@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/order
 import * as dotenv from 'dotenv'; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config();
-import { asClass, createContainer } from 'awilix';
+import { asClass, asValue, createContainer } from 'awilix';
 import { loadControllers, scopePerRequest } from 'awilix-express';
 import * as bodyParser from 'body-parser';
 import compression from 'compression';
@@ -11,6 +11,8 @@ import helmet from 'helmet';
 import hpropagate from 'hpropagate';
 import * as process from 'process';
 import { configuration } from './config/configuration';
+import { AuthService } from './modules/auth/domain/services/auth.service';
+import { LoginUseCase } from './modules/auth/domain/useCases/login.useCase';
 import { ItemService } from './modules/item/domain/services/item.service';
 import { DeleteItemUseCase } from './modules/item/domain/useCases/delete-item.useCase';
 import { GetItemUseCase } from './modules/item/domain/useCases/get-item.useCase';
@@ -40,15 +42,23 @@ async function bootstrap(): Promise<string>
 {
     validateEnv(process.env);
 
-    const { server, db } = configuration();
+    const config = configuration();
 
-    const _db = new DbCreateConnection(db);
+    const _db = new DbCreateConnection(config.db);
 
     await _db.initConfig();
     await _db.create();
 
     hpropagate({ propagateInResponses: true });
 
+
+    const authModule = {
+        // UseCases
+        loginUseCase: asClass(LoginUseCase),
+        // Repositories
+        // Services
+        authService: asClass(AuthService).singleton()
+    };
 
     const userModule = {
         // UseCases
@@ -79,11 +89,13 @@ async function bootstrap(): Promise<string>
     };
 
     const infrastructure = {
-        uniqueService: asClass(UniqueService).singleton()
+        uniqueService: asClass(UniqueService).singleton(),
+        config: asValue(config)
     };
 
     const container = createContainer()
         .register({
+            ...authModule,
             ...userModule,
             ...itemModule,
             ...infrastructure
@@ -120,19 +132,19 @@ async function bootstrap(): Promise<string>
         // Loads all controllers in the `routes` folder
         // relative to the current working directory.
         // This is a glob pattern.
-        .use(`${server.prefix}${server.version}`, loadControllers('modules/**/presentation/controllers/*.controller.ts', { cwd: __dirname }))
+        .use(`${config.server.prefix}${config.server.version}`, loadControllers('modules/**/presentation/controllers/*.controller.ts', { cwd: __dirname }))
         .use(ErrorHandler.handle)
         .use(LoggerMiddleware)
         .use(ThrottleMiddleware)
         .use(RedirectRouteNotFoundMiddleware)
-        .listen(server.port);
+        .listen(config.server.port);
 
-    return server.url.api
+    return config.server.url.api
         .replace('<protocol>', 'http')
         .replace('<domain>', 'localhost')
-        .replace('<port>', `:${server.port}`)
-        .replace('<prefix>', `${server.prefix}`)
-        .replace('<version>', `${server.version}`);
+        .replace('<port>', `:${config.server.port}`)
+        .replace('<prefix>', `${config.server.prefix}`)
+        .replace('<version>', `${config.server.version}`);
 }
 
 (async(): Promise<void> =>

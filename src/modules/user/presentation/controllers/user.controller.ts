@@ -1,5 +1,5 @@
 import { StatusCode } from '@digichanges/shared-experience';
-import { DELETE, GET, PATCH, POST, PUT, route } from 'awilix-express';
+import { DELETE, GET, PATCH, POST, PUT, before, route } from 'awilix-express';
 import { Request, Response } from 'express';
 import { CriteriaBuilder } from '../../../../shared/presentation/criterias/citeria';
 import { PaginationFilter } from '../../../../shared/presentation/criterias/paginationFilter';
@@ -9,6 +9,7 @@ import { PartialRemovedDto } from '../../../../shared/presentation/dtos/partial-
 import { DtoValidator } from '../../../../shared/presentation/shared/dto-validator';
 import { Responder } from '../../../../shared/presentation/shared/responder';
 import { GetUris } from '../../../../utils/get-uris';
+import { AuthenticateMiddleware } from '../../../auth/presentation/middlewares/authenticate.middleware';
 import { DeleteUserUseCase } from '../../domain/useCases/delete-user.useCase';
 import { GetUserUseCase } from '../../domain/useCases/get-user.useCase';
 import { ListUsersUseCase } from '../../domain/useCases/list-users.useCase';
@@ -31,6 +32,7 @@ type Dependencies = {
 }
 
 @route('/users')
+@before([AuthenticateMiddleware(true)])
 export default class UserController
 {
     private responder: Responder;

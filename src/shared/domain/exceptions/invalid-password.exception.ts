@@ -1,5 +1,5 @@
-import { ErrorException } from '@digichanges/shared-experience';
 import { Locales } from '../../presentation/shared/locales';
+import { ErrorException } from './error.exception';
 
 export class InvalidPasswordException extends ErrorException
 {

@@ -1,5 +1,6 @@
 import { StatusCode } from '@digichanges/shared-experience';
 import exceptions from '../../../exceptions';
+import { TokenExpiredHttpException } from '../../../modules/auth/presentation/exceptions/token-expired-http.exception';
 import { DuplicateEntityHttpException } from '../exceptions/duplicate-entity-http.exception';
 import { HttpErrorException } from '../exceptions/http-error.exception';
 
@@ -24,7 +25,11 @@ export class ExceptionFactory
         exception.statusCode = err?.statusCode ?? statusCode;
         exception.errors = err?.errors ?? [];
 
-        if (err?.name === 'QueryFailedError')
+        if (err instanceof Error && err.message === 'Token expired')
+        {
+            exception = new TokenExpiredHttpException();
+        }
+        else if (err?.name === 'QueryFailedError')
         {
             if (err.code === '23505')
             {
