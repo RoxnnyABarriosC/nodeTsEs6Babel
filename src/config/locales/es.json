@@ -1,0 +1,20 @@
+{
+	"greetings": "Bienvenido",
+	"app": {
+		"presentation": {
+			"exceptions": {
+				"uniqueAttribute": "La propiedad {{name}} ya se encuentra en uso.",
+				"uniqueAttributes": "La combinación de propiedades {{name}} ya se encuentra en uso.",
+				"duplicateEntity": "Entidad duplicada.",
+				"routeNotFound": "Ruta no encontrada.",
+				"validateAttr": "Hubo un error al validar los atributos."
+			}
+		}
+	},
+	"shared": {
+		"exceptions": {
+			"decryptForbidden": "No se puede desencriptar.",
+			"notFound": "No encontrado."
+		}
+	}
+}

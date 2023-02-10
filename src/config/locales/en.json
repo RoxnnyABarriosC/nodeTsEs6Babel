@@ -1,0 +1,20 @@
+{
+	"greetings": "Welcome",
+	"app": {
+		"presentation": {
+			"exceptions": {
+				"uniqueAttribute": "The {{name}} property is already in use.",
+				"uniqueAttributes": "The property combination {{name}} is already in use.",
+				"duplicateEntity": "Duplicate entity.",
+				"routeNotFound": "Route not found.",
+				"validateAttr": "There was an error validating the tributes."
+			}
+		}
+	},
+	"shared": {
+		"exceptions": {
+			"decryptForbidden": "Decrypt forbidden.",
+			"notFound": "not found."
+		}
+	}
+}
