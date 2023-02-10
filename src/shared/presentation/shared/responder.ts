@@ -1,10 +1,10 @@
 import {
-    IPaginator,
     PaginatorTransformer,
     Transformer
 } from '@digichanges/shared-experience';
 import { IHttpStatusCode } from '@digichanges/shared-experience/src/InterfacesAdapters';
 import { Request, Response } from 'express';
+import { Paginator } from '../../../modules/user/infrastructure/shared/paginator';
 import { FormatError } from './format-error';
 import { FormatResponder } from './format-responder';
 import { FormatResponderInterface } from './format-response.interface';
@@ -42,7 +42,7 @@ export class Responder
     }
 
     // TODO: Refactor to encapsulate this logic
-    public async paginate(paginator: IPaginator, request: Request | any, response: Response, status: IHttpStatusCode, transformer?: Transformer)
+    public async paginate(paginator: Paginator<any>, request: Request | any, response: Response, status: IHttpStatusCode, transformer?: Transformer)
     {
         const data = await paginator.paginate();
         const metadata = paginator.getMetadata();

@@ -6,24 +6,24 @@ export class SaveUserDto
 {
     @IsString()
     @Length(5, 20)
-    public userName: string;
+    public readonly userName: string;
 
     @IsString()
     @Length(3, 20)
-    public firstName: string;
+    public readonly firstName: string;
 
     @IsString()
     @Length(3, 20)
-    public lastName: string;
+    public readonly lastName: string;
 
     @IsEmail()
-    public email: string;
+    public readonly email: string;
 
     @IsEnum(GenderEnum)
-    public gender: GenderEnum;
+    public readonly gender: GenderEnum;
 
     @IsDateString()
-    public birthday: Date;
+    public readonly birthday: Date;
 
     constructor(data: SaveUserDto)
     {

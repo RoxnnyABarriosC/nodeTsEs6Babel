@@ -35,6 +35,9 @@ export const UserSchema = new EntitySchema<Entity<User>>({
         verify: {
             type: Boolean,
             default: false
+        },
+        birthday: {
+            type: Date
         }
     }
 });

@@ -12,9 +12,10 @@ import hpropagate from 'hpropagate';
 import * as process from 'process';
 import { configuration } from './config/configuration';
 import { UserService } from './modules/user/domain/services/user.service';
+import { ListUsersUseCase } from './modules/user/domain/useCases/list-users.useCase';
 import { SaveUserUseCase } from './modules/user/domain/useCases/save-user.useCase';
 import { UpdateUserUseCase } from './modules/user/domain/useCases/update-user.useCase';
-import { UserRepository } from './modules/user/infrastructure/repositories/user-repository.service';
+import { UserRepository } from './modules/user/infrastructure/repositories/user.repository';
 import { UniqueService } from './shared/infrastructure/services/unique.service';
 import { DbCreateConnection } from './shared/infrastructure/shared/db-create-connection';
 import { LoggerMiddleware } from './shared/presentation/middlewares/logger.middleware';
@@ -42,6 +43,7 @@ async function bootstrap(): Promise<string>
         .register({
             saveUserUseCase: asClass(SaveUserUseCase),
             updateUserUseCase: asClass(UpdateUserUseCase),
+            listUsersUseCase: asClass(ListUsersUseCase),
             userRepository: asClass(UserRepository).singleton(),
             userService: asClass(UserService).singleton(),
             uniqueService: asClass(UniqueService).singleton()

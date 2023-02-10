@@ -1,5 +1,5 @@
 import { UniqueService } from '../../../../shared/infrastructure/services/unique.service';
-import { UserRepository } from '../../infrastructure/repositories/user-repository.service';
+import { UserRepository } from '../../infrastructure/repositories/user.repository';
 import { User } from '../entities/user.entity';
 
 type Dependencies = {

@@ -1,4 +1,4 @@
-import { UserRepository } from '../../infrastructure/repositories/user-repository.service';
+import { UserRepository } from '../../infrastructure/repositories/user.repository';
 import { SaveUserDto } from '../../presentation/dtos/save-user.dto';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';

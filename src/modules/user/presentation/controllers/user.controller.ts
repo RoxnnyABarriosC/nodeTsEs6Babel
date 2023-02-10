@@ -1,18 +1,25 @@
 import { StatusCode } from '@digichanges/shared-experience';
-import { POST, PUT, route } from 'awilix-express';
+import { GET, POST, PUT, route } from 'awilix-express';
 import { Request, Response } from 'express';
+import { CriteriaBuilder } from '../../../../shared/presentation/criterias/citeria';
+import { PaginationFilter } from '../../../../shared/presentation/criterias/paginationFilter';
 import { IdDto } from '../../../../shared/presentation/dtos/id.dto';
 import { DtoValidator } from '../../../../shared/presentation/shared/dto-validator';
 import { Responder } from '../../../../shared/presentation/shared/responder';
+import { GetUris } from '../../../../utils/get-uris';
+import { ListUsersUseCase } from '../../domain/useCases/list-users.useCase';
 import { SaveUserUseCase } from '../../domain/useCases/save-user.useCase';
 import { UpdateUserUseCase } from '../../domain/useCases/update-user.useCase';
+import { UserFilter } from '../criterias/user.filter';
+import { UserSort } from '../criterias/user.sort';
 import { SaveUserDto } from '../dtos/save-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UserTransformer } from '../transformers/user.transform';
 
 type Dependencies = {
     saveUserUseCase: SaveUserUseCase,
-    updateUserUseCase: UpdateUserUseCase
+    updateUserUseCase: UpdateUserUseCase,
+    listUsersUseCase: ListUsersUseCase
 }
 
 @route('/users')
@@ -21,12 +28,30 @@ export default class UserController
     private responder: Responder;
     private saveUseCase: SaveUserUseCase;
     private updateUseCase: UpdateUserUseCase;
+    private listUseCase: ListUsersUseCase;
 
-    constructor({ saveUserUseCase, updateUserUseCase }: Dependencies)
+    constructor({ saveUserUseCase, updateUserUseCase, listUsersUseCase }: Dependencies)
     {
         this.saveUseCase = saveUserUseCase;
         this.updateUseCase = updateUserUseCase;
+        this.listUseCase = listUsersUseCase;
         this.responder = new Responder();
+    }
+
+    @GET()
+    async list(req: Request, res: Response)
+    {
+        const filters = new UserFilter(req?.query?.filter);
+        const sorts = new UserSort(req?.query?.sort);
+        const pagination = new PaginationFilter(req?.query?.pagination);
+
+        await DtoValidator.handle([filters, sorts, pagination]);
+
+        const criteria = new CriteriaBuilder(filters, sorts, pagination, GetUris(req));
+
+        const paginator = await this.listUseCase.handle(criteria);
+
+        return await this.responder.paginate(paginator, req, res, StatusCode.HTTP_OK, new UserTransformer());
     }
 
     @POST()

@@ -1,0 +1,68 @@
+import { BaseRepository } from '../../../../shared/infrastructure/repositories/base.repository';
+import { CriteriaBuilder } from '../../../../shared/presentation/criterias/citeria';
+import { User } from '../../domain/entities/user.entity';
+import { UserFilter, UserFilters } from '../../presentation/criterias/user.filter';
+import { UserSchema } from '../schemas/user.schema';
+import { Paginator } from '../shared/paginator';
+import { PgSqlFilter } from '../shared/pg-sql-filter.helper';
+
+export class UserRepository extends BaseRepository<User>
+{
+    constructor()
+    {
+        super(User.name, UserSchema);
+    }
+
+    async list(criteria: CriteriaBuilder)
+    {
+        const queryBuilder = this.repository.createQueryBuilder('i');
+
+        const filter = new PgSqlFilter(criteria.getFilter<UserFilter>(), queryBuilder);
+
+        queryBuilder.where('1 = 1');
+
+        void await filter.customFilter(async(fltr, qb) =>
+        {
+            if (fltr.has(UserFilters.WITH_PARTIAL_REMOVED))
+            {
+                const withDeleted = fltr.get<boolean>(UserFilters.WITH_PARTIAL_REMOVED);
+
+                if (withDeleted)
+                {
+                    qb.withDeleted();
+                }
+            }
+        });
+
+        void filter.is({
+            attribute: UserFilters.PARTIAL_REMOVED,
+            isBoolean: true,
+            dbAttribute: 'deletedAt'
+        }, 'andWhere', 'IS NOT NULL');
+
+        void filter.filter({
+            attribute: UserFilters.VERIFY,
+            isBoolean: true
+        }, 'andWhere', '=');
+
+        void filter.filter({
+            attribute: UserFilters.ENABLE,
+            isBoolean: true
+        }, 'andWhere', '=');
+
+        void await filter.search(UserFilters.SEARCH, {
+            partialMatch: true,
+            attributesDB: [
+                { name: 'userName', setWeight: 'A' },
+                { name: 'email', setWeight: 'A' },
+                { name: 'firstName', setWeight: 'B' },
+                { name: 'lastName', setWeight: 'B' },
+                { name: 'birthday', setWeight: 'B' },
+                { name: 'gender', setWeight: 'C' }
+            ]
+        }, 'andWhere');
+
+
+        return new Paginator(queryBuilder, criteria);
+    }
+}

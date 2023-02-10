@@ -5,10 +5,10 @@ import { SaveUserDto } from './save-user.dto';
 export class UpdateUserDto extends SaveUserDto
 {
     @IsBoolean()
-    public enable: boolean;
+    public readonly enable: boolean;
 
     @IsBoolean()
-    public verify: string;
+    public readonly verify: string;
 
     constructor(data: UpdateUserDto)
     {

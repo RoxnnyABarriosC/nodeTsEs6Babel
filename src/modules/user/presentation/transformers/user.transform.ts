@@ -14,7 +14,7 @@ export class UserTransformer extends Transformer
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            birthday: user.birthday,
+            birthday: dayjs(user.birthday).utc().unix(),
             gender: user.gender,
             enable: user.enable,
             verify: user.verify,
