@@ -7,7 +7,7 @@ type Dependencies = {
 
 export class ListUsersUseCase
 {
-    private repository: UserRepository;
+    private readonly repository: UserRepository;
 
     constructor({ userRepository }: Dependencies)
     {

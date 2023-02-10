@@ -1,7 +1,7 @@
 import { Brackets, SelectQueryBuilder } from 'typeorm';
-import { FilterCriteria } from '../../../../shared/presentation/criterias/filter.criteria';
-import Parse from '../../../../utils/parse';
-import { PrototypeToString, StringPrototypes } from '../../../../utils/prototype-to-string';
+import Parse from '../../../utils/parse';
+import { PrototypeToString, StringPrototypes } from '../../../utils/prototype-to-string';
+import { FilterCriteria } from '../../presentation/criterias/filter.criteria';
 
 export declare type AttributeConfig<F = any, E = any> = {
     attribute: KeyAttribute<F>;

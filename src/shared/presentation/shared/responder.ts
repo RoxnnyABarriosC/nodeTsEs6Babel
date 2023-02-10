@@ -4,7 +4,7 @@ import {
 } from '@digichanges/shared-experience';
 import { IHttpStatusCode } from '@digichanges/shared-experience/src/InterfacesAdapters';
 import { Request, Response } from 'express';
-import { Paginator } from '../../../modules/user/infrastructure/shared/paginator';
+import { Paginator } from '../../infrastructure/shared/paginator';
 import { FormatError } from './format-error';
 import { FormatResponder } from './format-responder';
 import { FormatResponderInterface } from './format-response.interface';

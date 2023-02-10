@@ -1,5 +1,5 @@
 import { SelectQueryBuilder } from 'typeorm';
-import { CriteriaBuilder } from '../../../../shared/presentation/criterias/citeria';
+import { CriteriaBuilder } from '../../presentation/criterias/citeria';
 import { BasePaginator } from './base-paginator';
 
 export class Paginator<E = any> extends BasePaginator

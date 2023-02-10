@@ -1,12 +1,12 @@
 import { UniqueService } from '../../../../shared/infrastructure/services/unique.service';
-import { UserRepository } from '../../infrastructure/repositories/user.repository';
-import { User } from '../entities/user.entity';
+import { ItemRepository } from '../../infrastructure/repositories/item.repository';
+import { Item } from '../entities/item.entity';
 
 type Dependencies = {
     uniqueService: UniqueService,
 }
 
-export class UserService
+export class ItemService
 {
     private readonly uniqueService: UniqueService;
 
@@ -15,13 +15,12 @@ export class UserService
         this.uniqueService = uniqueService;
     }
 
-    async validate(entity: User, repository: UserRepository): Promise<void>
+    async validate(entity: Item, repository: ItemRepository): Promise<void>
     {
-        void await this.uniqueService.validate<User>({
+        void await this.uniqueService.validate<Item>({
             repository,
             validate: {
-                email: entity.email,
-                userName: entity.userName
+                name: entity.name
             },
             refValue: entity.Id
         });

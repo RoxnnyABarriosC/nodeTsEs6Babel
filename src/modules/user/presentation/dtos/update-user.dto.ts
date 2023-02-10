@@ -9,10 +9,4 @@ export class UpdateUserDto extends SaveUserDto
 
     @IsBoolean()
     public readonly verify: string;
-
-    constructor(data: UpdateUserDto)
-    {
-        super(data);
-        Object.assign(this, data);
-    }
 }

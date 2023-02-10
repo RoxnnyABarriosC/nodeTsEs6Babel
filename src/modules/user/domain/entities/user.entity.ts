@@ -17,4 +17,9 @@ export class User extends BaseEntity
         super();
         this.build(partial);
     }
+
+    get fullName()
+    {
+        return `${this.firstName} ${this.lastName}`;
+    }
 }

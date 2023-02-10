@@ -10,9 +10,8 @@ type Dependencies = {
 
 export class SaveUserUseCase
 {
-    private repository: UserRepository;
-
-    private service: UserService;
+    private readonly repository: UserRepository;
+    private readonly service: UserService;
 
     constructor({ userRepository, userService }: Dependencies)
     {

@@ -1,10 +1,11 @@
 import { BaseRepository } from '../../../../shared/infrastructure/repositories/base.repository';
+import { Paginator } from '../../../../shared/infrastructure/shared/paginator';
+import { PgSqlFilter } from '../../../../shared/infrastructure/shared/pg-sql-filter.helper';
 import { CriteriaBuilder } from '../../../../shared/presentation/criterias/citeria';
 import { User } from '../../domain/entities/user.entity';
 import { UserFilter, UserFilters } from '../../presentation/criterias/user.filter';
 import { UserSchema } from '../schemas/user.schema';
-import { Paginator } from '../shared/paginator';
-import { PgSqlFilter } from '../shared/pg-sql-filter.helper';
+
 
 export class UserRepository extends BaseRepository<User>
 {

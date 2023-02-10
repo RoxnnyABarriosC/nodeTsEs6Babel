@@ -1,7 +1,7 @@
-import { CriteriaBuilder } from '../../../../shared/presentation/criterias/citeria';
-import { FilterCriteria } from '../../../../shared/presentation/criterias/filter.criteria';
-import { PaginationCriteria } from '../../../../shared/presentation/criterias/pagination.criteria';
-import { SortCriteria } from '../../../../shared/presentation/criterias/sort.criteria';
+import { CriteriaBuilder } from '../../presentation/criterias/citeria';
+import { FilterCriteria } from '../../presentation/criterias/filter.criteria';
+import { PaginationCriteria } from '../../presentation/criterias/pagination.criteria';
+import { SortCriteria } from '../../presentation/criterias/sort.criteria';
 
 
 export abstract class BasePaginator

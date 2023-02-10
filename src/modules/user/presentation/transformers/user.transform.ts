@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { User } from '../../domain/entities/user.entity';
 
-export class UserTransformer extends Transformer
+export class UserTransform extends Transformer
 {
     public async transform(user: User)
     {

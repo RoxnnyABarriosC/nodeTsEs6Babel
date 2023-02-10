@@ -1,46 +1,43 @@
 import { Expose } from 'class-transformer';
 import { DefaultSorts, Sort } from '../../../../shared/presentation/criterias/sort';
 import { IsSort } from '../../../../shared/presentation/decorators/is-sort.decorator';
+import { SortEnum } from '../../../../shared/presentation/enums/sort.enum';
 import { User } from '../../domain/entities/user.entity';
-import GenderEnum from '../../domain/enums/gender.enum';
 
 export class UserSort extends Sort
 {
     @IsSort()
-    public readonly userName: string;
+    public readonly userName: SortEnum;
 
     @IsSort()
-    public readonly firstName: string;
+    public readonly firstName: SortEnum;
 
     @IsSort()
-    public readonly lastName: string;
+    public readonly lastName: SortEnum;
 
     @IsSort()
-    public readonly email: string;
+    public readonly email: SortEnum;
 
     @IsSort()
-    public readonly gender: GenderEnum;
+    public readonly gender: SortEnum;
 
     @IsSort()
-    public readonly birthday: Date;
+    public readonly birthday: SortEnum;
 
     @IsSort()
-    public readonly enable: boolean;
+    public readonly enable: SortEnum;
 
     @IsSort()
-    public readonly verify: boolean;
+    public readonly verify: SortEnum;
 
     @IsSort()
-
-    public readonly createdAt: string;
-
-    @IsSort()
-
-    public readonly updatedAt: string;
+    public readonly createdAt: SortEnum;
 
     @IsSort()
+    public readonly updatedAt: SortEnum;
 
-    public readonly deletedAt: string;
+    @IsSort()
+    public readonly deletedAt: SortEnum;
 
     constructor(partial: Partial<UserSort> | any)
     {

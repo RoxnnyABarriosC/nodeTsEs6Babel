@@ -11,6 +11,14 @@ import helmet from 'helmet';
 import hpropagate from 'hpropagate';
 import * as process from 'process';
 import { configuration } from './config/configuration';
+import { ItemService } from './modules/item/domain/services/item.service';
+import { DeleteItemUseCase } from './modules/item/domain/useCases/delete-item.useCase';
+import { GetItemUseCase } from './modules/item/domain/useCases/get-item.useCase';
+import { ListItemsUseCase } from './modules/item/domain/useCases/list-items.useCase';
+import { RestoreItemUseCase } from './modules/item/domain/useCases/restore-item.useCase';
+import { SaveItemUseCase } from './modules/item/domain/useCases/save-item.useCase';
+import { UpdateItemUseCase } from './modules/item/domain/useCases/update-item.useCase';
+import { ItemRepository } from './modules/item/infrastructure/repositories/item.repository';
 import { UserService } from './modules/user/domain/services/user.service';
 import { DeleteUserUseCase } from './modules/user/domain/useCases/delete-user.useCase';
 import { GetUserUseCase } from './modules/user/domain/useCases/get-user.useCase';
@@ -28,7 +36,6 @@ import { ErrorHandler } from './shared/presentation/shared/error-handler';
 import { Logger } from './utils/logger';
 import { validateEnv } from './validate-env';
 
-
 async function bootstrap(): Promise<string>
 {
     validateEnv(process.env);
@@ -43,7 +50,7 @@ async function bootstrap(): Promise<string>
     hpropagate({ propagateInResponses: true });
 
 
-    const userDomain = {
+    const userModule = {
         // UseCases
         saveUserUseCase: asClass(SaveUserUseCase),
         updateUserUseCase: asClass(UpdateUserUseCase),
@@ -57,13 +64,28 @@ async function bootstrap(): Promise<string>
         userService: asClass(UserService).singleton()
     };
 
+    const itemModule = {
+        // UseCases
+        saveItemUseCase: asClass(SaveItemUseCase),
+        updateItemUseCase: asClass(UpdateItemUseCase),
+        listItemsUseCase: asClass(ListItemsUseCase),
+        deleteItemUseCase: asClass(DeleteItemUseCase),
+        restoreItemUseCase: asClass(RestoreItemUseCase),
+        getItemUseCase: asClass(GetItemUseCase),
+        // Repositories
+        itemRepository: asClass(ItemRepository).singleton(),
+        // Services
+        itemService: asClass(ItemService).singleton()
+    };
+
     const infrastructure = {
         uniqueService: asClass(UniqueService).singleton()
     };
 
     const container = createContainer()
         .register({
-            ...userDomain,
+            ...userModule,
+            ...itemModule,
             ...infrastructure
         });
 
