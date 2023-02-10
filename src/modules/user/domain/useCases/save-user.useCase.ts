@@ -1,4 +1,3 @@
-import { PasswordValueObject } from '../../../../shared/domain/valueObjects/password.valueObject';
 import { UserRepository } from '../../infrastructure/repositories/user.repository';
 import { SaveUserDto } from '../../presentation/dtos/save-user.dto';
 import { UserDto } from '../../presentation/dtos/user.dto';
@@ -32,7 +31,7 @@ export class SaveUserUseCase
 
         await this.service.validate(user, this.repository);
 
-        user.password = await (new PasswordValueObject(password, 5, 20)).ready();
+        user.password = await this.service.preparePassword(password);
 
         return await this.repository.save(user);
     }

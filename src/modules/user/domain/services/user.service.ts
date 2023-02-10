@@ -1,3 +1,4 @@
+import { PasswordValueObject } from '../../../../shared/domain/valueObjects/password.valueObject';
 import { UniqueService } from '../../../../shared/infrastructure/services/unique.service';
 import { UserRepository } from '../../infrastructure/repositories/user.repository';
 import { User } from '../entities/user.entity';
@@ -25,5 +26,10 @@ export class UserService
             },
             refValue: entity.Id
         });
+    }
+
+    async preparePassword(password: string)
+    {
+        return  await (new PasswordValueObject(password, 5, 20)).ready();
     }
 }

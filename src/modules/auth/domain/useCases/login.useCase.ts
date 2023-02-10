@@ -1,7 +1,7 @@
 import { BcryptEncryptionStrategy } from '../../../../shared/domain/strategies/bcrypt-encryption.strategy';
 import { TokenFactory } from '../../../../shared/infrastructure/factories/token.factory';
 import { UserRepository } from '../../../user/infrastructure/repositories/user.repository';
-import { LoginDto } from '../../presentation/dtos/loginDto';
+import { LoginDto } from '../../presentation/dtos/login.dto';
 import { BadCredentialsException } from '../exceptions/bad-credentials.exception';
 import { UnverifiedUserException } from '../exceptions/unverified-user.exception';
 import { UserDisabledException } from '../exceptions/user-disabled.exception';
@@ -13,15 +13,15 @@ type Dependencies = {
 
 export class LoginUseCase
 {
-    private readonly repository: UserRepository;
-    private encryption: BcryptEncryptionStrategy;
     private tokenFactory: TokenFactory;
+    private encryption: BcryptEncryptionStrategy;
+    private readonly repository: UserRepository;
 
     constructor({ userRepository }: Dependencies)
     {
-        this.repository = userRepository;
         this.encryption = new BcryptEncryptionStrategy();
         this.tokenFactory = new TokenFactory();
+        this.repository = userRepository;
     }
 
     async handle(dto: LoginDto): Promise<JwtModel>

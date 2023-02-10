@@ -13,6 +13,9 @@ import * as process from 'process';
 import { configuration } from './config/configuration';
 import { AuthService } from './modules/auth/domain/services/auth.service';
 import { LoginUseCase } from './modules/auth/domain/useCases/login.useCase';
+import { LogoutUseCase } from './modules/auth/domain/useCases/logout.useCase';
+import { RefreshTokenUseCase } from './modules/auth/domain/useCases/refresh-token.useCase';
+import { RegisterUseCase } from './modules/auth/domain/useCases/register.useCase';
 import { ItemService } from './modules/item/domain/services/item.service';
 import { DeleteItemUseCase } from './modules/item/domain/useCases/delete-item.useCase';
 import { GetItemUseCase } from './modules/item/domain/useCases/get-item.useCase';
@@ -55,6 +58,9 @@ async function bootstrap(): Promise<string>
     const authModule = {
         // UseCases
         loginUseCase: asClass(LoginUseCase),
+        registerUseCase: asClass(RegisterUseCase),
+        logoutUseCase: asClass(LogoutUseCase),
+        refreshTokenUseCase: asClass(RefreshTokenUseCase),
         // Repositories
         // Services
         authService: asClass(AuthService).singleton()
