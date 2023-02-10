@@ -19,7 +19,8 @@ export class UserTransformer extends Transformer
             enable: user.enable,
             verify: user.verify,
             createdAt: dayjs(user.createdAt).utc().unix(),
-            updatedAt: dayjs(user.updatedAt).utc().unix()
+            updatedAt: dayjs(user.updatedAt).utc().unix(),
+            deletedAt: dayjs(user.deletedAt).utc().unix()
         };
     }
 }

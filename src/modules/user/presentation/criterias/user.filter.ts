@@ -33,10 +33,10 @@ export class UserFilter extends Filter
     @ParseBoolean()
     public readonly verify: boolean;
 
-    constructor(partial: Partial<UserFilter> | any)
+    constructor(partial: Partial<UserFilter> | any = {})
     {
         super();
-        Object.assign(this, partial ?? {});
+        Object.assign(this, partial);
     }
 
     @Expose()

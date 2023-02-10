@@ -12,7 +12,10 @@ import hpropagate from 'hpropagate';
 import * as process from 'process';
 import { configuration } from './config/configuration';
 import { UserService } from './modules/user/domain/services/user.service';
+import { DeleteUserUseCase } from './modules/user/domain/useCases/delete-user.useCase';
+import { GetUserUseCase } from './modules/user/domain/useCases/get-user.useCase';
 import { ListUsersUseCase } from './modules/user/domain/useCases/list-users.useCase';
+import { RestoreUserUseCase } from './modules/user/domain/useCases/restore-user.useCase';
 import { SaveUserUseCase } from './modules/user/domain/useCases/save-user.useCase';
 import { UpdateUserUseCase } from './modules/user/domain/useCases/update-user.useCase';
 import { UserRepository } from './modules/user/infrastructure/repositories/user.repository';
@@ -39,14 +42,29 @@ async function bootstrap(): Promise<string>
 
     hpropagate({ propagateInResponses: true });
 
+
+    const userDomain = {
+        // UseCases
+        saveUserUseCase: asClass(SaveUserUseCase),
+        updateUserUseCase: asClass(UpdateUserUseCase),
+        listUsersUseCase: asClass(ListUsersUseCase),
+        deleteUserUseCase: asClass(DeleteUserUseCase),
+        restoreUserUseCase: asClass(RestoreUserUseCase),
+        getUserUseCase: asClass(GetUserUseCase),
+        // Repositories
+        userRepository: asClass(UserRepository).singleton(),
+        // Services
+        userService: asClass(UserService).singleton()
+    };
+
+    const infrastructure = {
+        uniqueService: asClass(UniqueService).singleton()
+    };
+
     const container = createContainer()
         .register({
-            saveUserUseCase: asClass(SaveUserUseCase),
-            updateUserUseCase: asClass(UpdateUserUseCase),
-            listUsersUseCase: asClass(ListUsersUseCase),
-            userRepository: asClass(UserRepository).singleton(),
-            userService: asClass(UserService).singleton(),
-            uniqueService: asClass(UniqueService).singleton()
+            ...userDomain,
+            ...infrastructure
         });
 
     const whitelist = ['http://localhost:3000'];
