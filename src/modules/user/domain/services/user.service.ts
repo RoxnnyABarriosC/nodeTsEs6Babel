@@ -2,6 +2,9 @@ import { PasswordValueObject } from '../../../../shared/domain/valueObjects/pass
 import { UniqueService } from '../../../../shared/infrastructure/services/unique.service';
 import { UserRepository } from '../../infrastructure/repositories/user.repository';
 import { User } from '../entities/user.entity';
+import {
+    SuperAdminCantBeDeletedOrUpdatedException
+} from '../exceptions/super-admin-cant-be-deleted-or-updated.exception';
 
 type Dependencies = {
     uniqueService: UniqueService,
@@ -31,5 +34,13 @@ export class UserService
     async preparePassword(password: string)
     {
         return  await (new PasswordValueObject(password, 5, 20)).ready();
+    }
+
+    checkSuperAdmin(user: User): void
+    {
+        if (user.isSuperAdmin)
+        {
+            throw new SuperAdminCantBeDeletedOrUpdatedException();
+        }
     }
 }

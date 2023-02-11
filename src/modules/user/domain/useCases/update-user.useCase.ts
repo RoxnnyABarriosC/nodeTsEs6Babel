@@ -23,6 +23,8 @@ export class UpdateUserUseCase
     {
         const user = await this.repository.getOne(id);
 
+        void this.service.checkSuperAdmin(user);
+
         user.build(dto);
 
         await this.service.validate(user, this.repository);

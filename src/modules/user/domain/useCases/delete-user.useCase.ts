@@ -1,21 +1,25 @@
 import { UserRepository } from '../../infrastructure/repositories/user.repository';
 import { User } from '../entities/user.entity';
+import { UserService } from '../services/user.service';
 
 type Dependencies = {
     userRepository: UserRepository,
+    userService: UserService
 }
 
 export class DeleteUserUseCase
 {
     private readonly repository: UserRepository;
+    private readonly  userService: UserService;
 
-    constructor({ userRepository }: Dependencies)
+    constructor({ userRepository, userService }: Dependencies)
     {
         this.repository = userRepository;
+        this.userService = userService;
     }
 
     async handle(id: string, deletePermanently: boolean): Promise<User>
     {
-        return this.repository.delete(id, !deletePermanently, deletePermanently);
+        return this.repository.checkSuperAdminDelete(id, !deletePermanently, deletePermanently, this.userService.checkSuperAdmin);
     }
 }

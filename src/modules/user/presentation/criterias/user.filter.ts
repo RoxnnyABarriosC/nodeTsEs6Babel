@@ -9,7 +9,8 @@ export enum UserFilters {
     PARTIAL_REMOVED = 'partialRemoved',
     WITH_PARTIAL_REMOVED = 'withPartialRemoved',
     ENABLE = 'enable',
-    VERIFY = 'verify'
+    VERIFY = 'verify',
+    IS_SUPER_ADMIN = 'isSuperAdmin'
 }
 
 export class UserFilter extends Filter
@@ -32,6 +33,10 @@ export class UserFilter extends Filter
     @IsOptional()
     @ParseBoolean()
     public readonly verify: boolean;
+
+    @IsOptional()
+    @ParseBoolean()
+    public readonly isSuperAdmin: boolean;
 
     constructor(partial: Partial<UserFilter> | any = {})
     {

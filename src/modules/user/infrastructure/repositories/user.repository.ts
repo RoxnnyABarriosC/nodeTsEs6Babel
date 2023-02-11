@@ -15,7 +15,7 @@ export class UserRepository extends BaseRepository<User>
         super(User.name, UserSchema);
     }
 
-    async list(criteria: CriteriaBuilder)
+    async list(criteria: CriteriaBuilder, authUserId: string)
     {
         const queryBuilder = this.repository.createQueryBuilder('i');
 
@@ -36,6 +36,11 @@ export class UserRepository extends BaseRepository<User>
             }
         });
 
+        void await filter.customFilter(async(fltr, qb) =>
+        {
+            qb.andWhere('i._id <> :id', { id: authUserId });
+        });
+
         void filter.is({
             attribute: UserFilters.PARTIAL_REMOVED,
             isBoolean: true,
@@ -49,6 +54,11 @@ export class UserRepository extends BaseRepository<User>
 
         void filter.filter({
             attribute: UserFilters.ENABLE,
+            isBoolean: true
+        }, 'andWhere', '=');
+
+        void filter.filter({
+            attribute: UserFilters.IS_SUPER_ADMIN,
             isBoolean: true
         }, 'andWhere', '=');
 
@@ -78,5 +88,30 @@ export class UserRepository extends BaseRepository<User>
         }
 
         return user;
+    }
+
+    async checkSuperAdminDelete(id: string, softDelete = true, withDeleted = false, checkSuperAdmin: (user: User) => void): Promise<User>
+    {
+        const entity: any = await this.repository.findOne({ withDeleted, where: { _id: id } as any });
+
+        if (!entity)
+        {
+            throw new NotFoundException(this.entityName);
+        }
+
+        void checkSuperAdmin(entity);
+
+        if (softDelete)
+        {
+            await this.repository.softDelete(id);
+        }
+        else
+        {
+            await this.repository.delete(id);
+        }
+
+        entity.deletedAt = Date.now();
+
+        return entity;
     }
 }
