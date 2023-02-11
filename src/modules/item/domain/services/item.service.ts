@@ -1,7 +1,7 @@
 import { UniqueService } from '../../../../shared/infrastructure/services/unique.service';
-import { NotOwnerItemException } from '../../../user/domain/exceptions/not-owner-item.exception';
 import { ItemRepository } from '../../infrastructure/repositories/item.repository';
 import { Item } from '../entities/item.entity';
+import { NotOwnerItemException } from '../exceptions/not-owner-item.exception';
 
 type Dependencies = {
     uniqueService: UniqueService,
