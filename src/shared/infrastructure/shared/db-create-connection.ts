@@ -1,5 +1,6 @@
 import { newDb } from 'pg-mem';
 import { DataSource } from 'typeorm';
+import path from 'path';
 import { CreateConnectionInterface } from './create-connection.interface';
 
 export let dataSource: DataSource;
@@ -8,7 +9,7 @@ export class DbCreateConnection implements CreateConnectionInterface
 {
     private readonly config: any;
 
-    private entities = [`${process.cwd()}/src/modules/**/infrastructure/schemas/*.schema{.ts,.js}`];
+    private entities = [path.resolve(__dirname, '../../../modules/**/infrastructure/schemas/*.schema{.ts,.js}')];
 
     constructor(config: any)
     {

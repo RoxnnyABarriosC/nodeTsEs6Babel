@@ -1,4 +1,5 @@
 import i18n from 'i18n';
+import path from 'path';
 
 export class Locales
 {
@@ -9,7 +10,7 @@ export class Locales
     {
         this.i18n.configure({
             locales: ['en', 'es'],
-            directory: `${process.cwd()}/dist/config/locales`,
+            directory: path.resolve(__dirname, '../../../config/locales'),
             defaultLocale: 'en',
             objectNotation: true
         });

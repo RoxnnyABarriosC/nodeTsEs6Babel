@@ -9,6 +9,7 @@ import cors from 'cors';
 import Express from 'express';
 import helmet from 'helmet';
 import hpropagate from 'hpropagate';
+import path from 'path';
 import * as process from 'process';
 import { configuration } from './config/configuration';
 import { AuthService } from './modules/auth/domain/services/auth.service';
@@ -147,7 +148,7 @@ async function bootstrap(): Promise<string>
         // relative to the current working directory.
         // This is a glob pattern.
         .use(prefix, ThrottleMiddleware)
-        .use(prefix, loadControllers('modules/**/presentation/controllers/*.controller.ts', { cwd: __dirname }))
+        .use(prefix, loadControllers(path.resolve(__dirname, 'modules/**/presentation/controllers/*.controller{.ts,.js}'), { cwd: __dirname }))
         .use(ErrorHandler.handle)
         .use(LoggerMiddleware)
 
