@@ -7,4 +7,10 @@ export class UpdateItemDto extends SaveItemDto
     @IsString()
     @IsOptional()
     public description: string;
+
+    constructor(data: UpdateItemDto)
+    {
+        super(data);
+        Object.assign(this, data);
+    }
 }

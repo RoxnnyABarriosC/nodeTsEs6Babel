@@ -5,7 +5,8 @@ export class Item extends BaseEntity
 {
     public name: string;
     public description: string;
-    // public createdBy: User;
+    public createdBy: User;
+
     constructor(partial: Partial<Item>)
     {
         super();

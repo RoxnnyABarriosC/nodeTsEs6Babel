@@ -4,7 +4,7 @@ import { UserRepository } from '../../../user/infrastructure/repositories/user.r
 import { AuthService } from '../../domain/services/auth.service';
 import { ForbiddenHttpException } from '../exceptions/forbidden-http.exception';
 
-export const AuthenticateMiddleware = (isSuperAdmin = false) =>
+export const AuthenticateMiddleware = (checkSuperAdmin = false) =>
 {
     return async(req: any, res: any, next: any) =>
     {
@@ -21,7 +21,7 @@ export const AuthenticateMiddleware = (isSuperAdmin = false) =>
             // TODO: agregar validacion para cunado un usuario es super admin
             const authUser = await userRepository.getOneByEmail(req.decodeToken.email);
 
-            if (authUser.isSuperAdmin !== isSuperAdmin)
+            if (checkSuperAdmin && !authUser.isSuperAdmin)
             {
                 throw new ForbiddenHttpException();
             }

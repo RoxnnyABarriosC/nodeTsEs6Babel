@@ -32,7 +32,7 @@ type Dependencies = {
 }
 
 @route('/users/items')
-@before([AuthenticateMiddleware(true)])
+@before([AuthenticateMiddleware()])
 export default class ItemController
 {
     private responder: Responder;

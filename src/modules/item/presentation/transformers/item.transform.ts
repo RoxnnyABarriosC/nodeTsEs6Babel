@@ -20,13 +20,13 @@ export class ItemTransform extends Transformer
     {
         dayjs.extend(utc);
 
-        // const createdBy = item.createdBy;
+        const createdBy = item.createdBy;
 
         return {
             id: item.Id,
             name: item.name,
             description: item.description,
-            // createdBy: createdBy && this.showCreatedBy ? await this.userTransform.handle(createdBy) : null,
+            createdBy: createdBy && this.showCreatedBy ? await this.userTransform.handle(createdBy) : null,
             createdAt: dayjs(item.createdAt).utc().unix(),
             updatedAt: dayjs(item.updatedAt).utc().unix(),
             deletedAt: dayjs(item.deletedAt).utc().unix()

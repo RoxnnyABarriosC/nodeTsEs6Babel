@@ -54,7 +54,7 @@ export abstract class BaseRepository<T extends ObjectLiteral>
             await this.repository.delete(id);
         }
 
-        entity.deletedAt = Date.now();
+        entity.deletedAt = new Date();
 
         return entity;
     }

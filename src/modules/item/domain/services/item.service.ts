@@ -1,4 +1,5 @@
 import { UniqueService } from '../../../../shared/infrastructure/services/unique.service';
+import { NotOwnerItemException } from '../../../user/domain/exceptions/not-owner-item.exception';
 import { ItemRepository } from '../../infrastructure/repositories/item.repository';
 import { Item } from '../entities/item.entity';
 
@@ -24,5 +25,16 @@ export class ItemService
             },
             refValue: entity.Id
         });
+    }
+
+    checkOwner(authUserID: string): (createdByIdP: string) => void
+    {
+        return (createdById: string) =>
+        {
+            if (authUserID !== createdById)
+            {
+                throw new  NotOwnerItemException();
+            }
+        };
     }
 }

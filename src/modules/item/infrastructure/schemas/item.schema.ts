@@ -18,11 +18,11 @@ export const ItemSchema = new EntitySchema<Entity<Item>>({
         }
     },
     relations: {
-    //     createdBy: {
-    //         type: 'many-to-one',
-    //         target: 'User',
-    //         joinColumn: true,
-    //         eager: true
-    //     }
+        createdBy: {
+            type: 'many-to-one',
+            target: 'User',
+            joinColumn: true,
+            eager: true
+        }
     }
 });

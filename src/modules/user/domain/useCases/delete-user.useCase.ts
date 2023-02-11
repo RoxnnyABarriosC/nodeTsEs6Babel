@@ -20,6 +20,6 @@ export class DeleteUserUseCase
 
     async handle(id: string, deletePermanently: boolean): Promise<User>
     {
-        return this.repository.checkSuperAdminDelete(id, !deletePermanently, deletePermanently, this.userService.checkSuperAdmin);
+        return this.repository.checkSuperAdminAndDelete(id, !deletePermanently, deletePermanently, this.userService.checkSuperAdmin);
     }
 }

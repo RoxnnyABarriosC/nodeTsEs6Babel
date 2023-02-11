@@ -34,10 +34,7 @@ export class UserRepository extends BaseRepository<User>
                     qb.withDeleted();
                 }
             }
-        });
 
-        void await filter.customFilter(async(fltr, qb) =>
-        {
             qb.andWhere('i._id <> :id', { id: authUserId });
         });
 
@@ -90,16 +87,16 @@ export class UserRepository extends BaseRepository<User>
         return user;
     }
 
-    async checkSuperAdminDelete(id: string, softDelete = true, withDeleted = false, checkSuperAdmin: (user: User) => void): Promise<User>
+    async checkSuperAdminAndDelete(id: string, softDelete = true, withDeleted = false, checkSuperAdmin: (user: User) => void): Promise<User>
     {
-        const entity: any = await this.repository.findOne({ withDeleted, where: { _id: id } as any });
+        const user = await this.repository.findOne({ withDeleted, where: { _id: id } as any });
 
-        if (!entity)
+        if (!user)
         {
             throw new NotFoundException(this.entityName);
         }
 
-        void checkSuperAdmin(entity);
+        void checkSuperAdmin(user);
 
         if (softDelete)
         {
@@ -110,8 +107,8 @@ export class UserRepository extends BaseRepository<User>
             await this.repository.delete(id);
         }
 
-        entity.deletedAt = Date.now();
+        user.deletedAt = new Date();
 
-        return entity;
+        return user;
     }
 }

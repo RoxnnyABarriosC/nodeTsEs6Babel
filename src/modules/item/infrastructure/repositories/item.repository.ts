@@ -1,3 +1,4 @@
+import { NotFoundException } from '../../../../shared/domain/exceptions/not-found.exception';
 import { BaseRepository } from '../../../../shared/infrastructure/repositories/base.repository';
 import { Paginator } from '../../../../shared/infrastructure/shared/paginator';
 import { PgSqlFilter } from '../../../../shared/infrastructure/shared/pg-sql-filter.helper';
@@ -13,7 +14,7 @@ export class ItemRepository extends BaseRepository<Item>
         super(Item.name, ItemSchema);
     }
 
-    async list(criteria: CriteriaBuilder)
+    async list(criteria: CriteriaBuilder, authUserId: string)
     {
         const queryBuilder = this.repository.createQueryBuilder('i');
 
@@ -32,7 +33,10 @@ export class ItemRepository extends BaseRepository<Item>
                     qb.withDeleted();
                 }
             }
+
+            qb.andWhere('i.createdBy_id = :id', { id: authUserId });
         });
+
 
         void filter.is({
             attribute: ItemFilters.PARTIAL_REMOVED,
@@ -49,7 +53,34 @@ export class ItemRepository extends BaseRepository<Item>
             ]
         }, 'andWhere');
 
+        queryBuilder.innerJoinAndSelect('i.createdBy', 'createdBy');
 
         return new Paginator(queryBuilder, criteria);
+    }
+
+
+    async checkOwnerAndDelete(id: string, softDelete = true, withDeleted = false, checkOwner: (createdById: string) => void): Promise<Item>
+    {
+        const item = await this.repository.findOne({ withDeleted, where: { _id: id } as any });
+
+        if (!item)
+        {
+            throw new NotFoundException(this.entityName);
+        }
+
+        checkOwner(item.createdBy.Id);
+
+        if (softDelete)
+        {
+            await this.repository.softDelete(id);
+        }
+        else
+        {
+            await this.repository.delete(id);
+        }
+
+        item.deletedAt = new Date();
+
+        return item;
     }
 }
