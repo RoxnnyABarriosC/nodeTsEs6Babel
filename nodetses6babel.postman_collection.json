@@ -1,0 +1,1115 @@
+{
+	"info": {
+		"_postman_id": "8d4367a0-39d2-4d9d-a5fb-1f35daae645e",
+		"name": "nodetses6babel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14542711"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
+									"",
+									"pm.globals.set(\"JWT\", jsonData.data.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"anais.torrens@gmail.com\",\n\t\"password\": \"1234567890\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/auth/login",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/auth/me",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Roxnny A\",\n    \"lastName\": \"Barrios\",\n    \"email\": \"roxnny.barrios@gmail.com\",\n    \"birthday\": \"1998-01-27\",\n    \"gender\": \"male\",\n    \"userName\": \"rbarrios\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/auth/me",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userName\": \"test02\",\n\t\"firstName\": \"Jhon\",\n\t\"lastName\": \"Doe\",\n\t\"email\": \"roxnny.b.a.rrios2@gmail.com\",\n\t\"password\": \"12345678\",\n\t\"passwordConfirmation\": \"12345678\",\n    \"birthday\": \"1990-02-27\",\n    \"gender\": \"male\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/auth/register",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/auth/logout",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
+									"",
+									"pm.globals.set(\"JWT\", jsonData.data.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/auth/refresh-token",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change My Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\": \"123456789\",\n    \"password\": \"1234567890\",\n    \"passwordConfirmation\": \"1234567890\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/auth/change-my-password",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"auth",
+								"change-my-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Add One",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
+									"",
+									"pm.globals.set(\"USER_ID\", jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userName\": \"test023\",\n    \"firstName\": \"Jhon\",\n    \"lastName\": \"Doe\",\n    \"email\": \"roxnny.b.a.rrios23@gmail.com\",\n    \"password\": \"12345678\",\n    \"passwordConfirmation\": \"12345678\",\n    \"birthday\": \"1990-02-27\",\n    \"gender\": \"male\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/users",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/users/{{USER_ID}}",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"users",
+								"{{USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/users?pagination[limit]=20&pagination[offset]=0",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "pagination[limit]",
+									"value": "20"
+								},
+								{
+									"key": "pagination[offset]",
+									"value": "0"
+								},
+								{
+									"key": "filter[search]",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "filter[partialRemoved]",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "filter[withPartialRemoved]",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "filter[enable]",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "filter[verify]",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "sort[enable]",
+									"value": "desc",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userName\": \"test023\",\n    \"firstName\": \"Jhon\",\n    \"lastName\": \"Doe\",\n    \"email\": \"roxnny.b.a.rrios23@gmail.com\",\n    \"birthday\": \"1990-02-27\",\n    \"gender\": \"male\",\n    \"enable\": true,\n    \"verify\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/users/{{USER_ID}}",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"users",
+								"{{USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/users/{{USER_ID}}",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"users",
+								"{{USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Restore",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/users/{{USER_ID}}/restore",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"users",
+								"{{USER_ID}}",
+								"restore"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Item",
+			"item": [
+				{
+					"name": "Add One",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response has data\"] = _.has(jsonData, 'data');",
+									"",
+									"pm.globals.set(\"ITEM_ID\", jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test023\",\n    \"description\": \"Jhon\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/users/items",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"users",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/users/items/{{ITEM_ID}}?partialRemoved=true",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"users",
+								"items",
+								"{{ITEM_ID}}"
+							],
+							"query": [
+								{
+									"key": "partialRemoved",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/users/items?pagination[limit]=20&pagination[offset]=0",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"users",
+								"items"
+							],
+							"query": [
+								{
+									"key": "pagination[limit]",
+									"value": "20"
+								},
+								{
+									"key": "pagination[offset]",
+									"value": "0"
+								},
+								{
+									"key": "filter[search]",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "filter[partialRemoved]",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "filter[withPartialRemoved]",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "filter[name]",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "filter[description]",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "sort[createdAt]",
+									"value": "desc",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test023\",\n    \"description\": \"Jhonhola\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/users/items/{{ITEM_ID}}",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"users",
+								"items",
+								"{{ITEM_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/users/items/{{ITEM_ID}}?deletePermanently=true",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"users",
+								"items",
+								"{{ITEM_ID}}"
+							],
+							"query": [
+								{
+									"key": "deletePermanently",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Restore",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}{{API_PREFIX}}{{API_VERSION}}/users/items/{{ITEM_ID}}/restore",
+							"host": [
+								"{{URL}}{{API_PREFIX}}{{API_VERSION}}"
+							],
+							"path": [
+								"users",
+								"items",
+								"{{ITEM_ID}}",
+								"restore"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "API_VERSION",
+			"value": "/v1",
+			"type": "string"
+		},
+		{
+			"key": "API_PREFIX",
+			"value": "/api",
+			"type": "string"
+		}
+	]
+}
