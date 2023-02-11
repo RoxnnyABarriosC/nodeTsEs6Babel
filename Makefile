@@ -4,6 +4,12 @@ install:
 	@echo '************                               ************'
 	pnpm install
 
+build_image:
+	@echo '************                               ************'
+	@echo '************       Build image             ************'
+	@echo '************                               ************'
+	STAGE=prod docker build -t nodetses6babel .
+
 up:
 	@echo '************                               ************'
 	@echo '************        UP CONTAINERS          ************'
@@ -27,6 +33,12 @@ dev:
 	@echo '************        DEV INIT     	      ************'
 	@echo '************                               ************'
 	STAGE=dev docker-compose up --build -d
+
+prod:
+	@echo '************                               ************'
+	@echo '************        PROD INIT    	      ************'
+	@echo '************                               ************'
+	STAGE=prod docker-compose up --build -d
 
 exec:
 	@echo '************                               ************'

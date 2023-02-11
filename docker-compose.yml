@@ -1,6 +1,33 @@
-version: '3.4'
+version: '3.6'
 
 services:
+  node:
+    container_name: node_ts_es6_babel
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ${STAGE}
+    ports:
+      - "4500:3000"
+    labels:
+      - traefik.http.routers.api.rule=Host(`api.domain.com`)
+      - traefik.http.routers.api.tls=true
+      - traefik.http.routers.api.tls.certresolver=lets-encrypt
+      - traefik.port=80
+    environment:
+      DB_HOST: db
+      DB_USER: nodetses6babel
+      DB_DATABASE: nodetses6babel
+      DB_PASSWORD: nodetses6babel
+      DB_PORT: 5432
+      DB_SYNCHRONIZE: true
+      DB_TYPE: postgres
+    volumes:
+      - .:/app:cached
+    networks:
+      - nodetses6babelnet
+
   db:
     container_name: node_ts_es6_babel_db
     restart: always
@@ -10,9 +37,9 @@ services:
     ports:
       - "5433:5432"
     environment:
-      - POSTGRES_USER=nodetses6babel
-      - POSTGRES_DB=nodetses6babel
-      - POSTGRES_PASSWORD=nodetses6babel
+      POSTGRES_USER: nodetses6babel
+      POSTGRES_DB: nodetses6babel
+      POSTGRES_PASSWORD: nodetses6babel
     volumes:
       - data:/var/lib/postgresql/data
     networks:

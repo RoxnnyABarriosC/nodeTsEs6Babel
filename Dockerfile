@@ -1,4 +1,6 @@
-FROM node:16-alpine as dev
+FROM node:18-alpine as deps
+
+WORKDIR /app
 
 RUN apk add bash dumb-init curl
 RUN curl -s https://raw.githubusercontent.com/Intervox/node-webp/latest/bin/install_webp | bash
@@ -13,49 +15,62 @@ RUN wget --no-check-certificate https://storage.googleapis.com/downloads.webmpro
       cd .. && \
       rm -rf libwebp-1.0.0 libwebp-1.0.0.tar.gz
 
-WORKDIR /usr/app
-
 RUN npm install --location=global pnpm
 
 COPY --chown=node:node package.json ./
 COPY --chown=node:node pnpm-lock.yaml ./
 COPY --chown=node:node src ./src
+COPY --chown=node:node babel.config.js ./
+COPY --chown=node:node nodemon.json ./
+
+RUN pnpm install
+
+FROM deps as builder
+
+USER root
+
+RUN mkdir /app/dist
+RUN chown -R node:node /app/dist
+
+USER node
+
+RUN pnpm build
+
+FROM builder as prerelease
+
+USER root
+
+RUN rm -rf node_modules
+RUN pnpm install --production --ignore-scripts
+
+FROM node:16-alpine as prod
+
+WORKDIR /app
+
+RUN apk add bash dumb-init
+RUN npm install -g pm2
+
+COPY --chown=node:node package.json pnpm-lock.yaml ecosystem.config.js ./
+COPY --from=prerelease --chown=node:node /app/node_modules/ ./node_modules/
+COPY --from=prerelease --chown=node:node /app/dist/ ./dist/
+COPY --chown=node:node .env/ ./
+
+USER node
+
+ENTRYPOINT ["dumb-init", "pm2-runtime", "start", "ecosystem.config.js"]
+
+EXPOSE 3000
+
+FROM deps as dev
+
 COPY --chown=node:node tsconfig.json ./
 COPY --chown=node:node tsconfig.build.json ./
 COPY --chown=node:node .env ./
-COPY --chown=node:node babel.config.js ./
-COPY --chown=node:node nodemon.json ./
 COPY --chown=node:node .eslintrc.js ./
 
 # Run development server
 ENTRYPOINT [ "dumb-init", "pnpm", "start:dev" ]
 
-EXPOSE 8089
-EXPOSE 9229
+EXPOSE 3000
 
 USER node
-
-FROM dev as build
-
-RUN pnpm install
-RUN pnpm build
-
-FROM build as prerelease
-
-RUN pnpm install --production
-
-FROM node:16-alpine as prod
-
-RUN apk add bash dumb-init
-RUN npm install -g pm2
-
-WORKDIR /usr/app
-
-COPY --from=prerelease --chown=node:node /usr/app/package.json ./
-COPY --from=prerelease --chown=node:node /usr/app/node_modules/ ./node_modules/
-COPY --from=prerelease --chown=node:node /usr/app/dist/ ./dist/
-COPY --from=prerelease --chown=node:node /usr/app/.env/ ./.env
-
-USER node
-
-ENTRYPOINT ["dumb-init", "pm2-runtime", "start", "ecosystem.config.js"]
