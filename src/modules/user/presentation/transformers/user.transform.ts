@@ -11,6 +11,7 @@ export class UserTransform extends Transformer
 
         return {
             id: user.Id,
+            userName: user.userName,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,

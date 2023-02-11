@@ -9,12 +9,16 @@ import { Responder } from '../../../../shared/presentation/shared/responder';
 import { DefaultTransform } from '../../../../shared/presentation/transformers/default.transform';
 import { UserTransform } from '../../../user/presentation/transformers/user.transform';
 import { DecodeTokenInterface } from '../../domain/services/decode-token.interface';
+import { ChangeMyPasswordUseCase } from '../../domain/useCases/change-my-password.useCase';
 import { LoginUseCase } from '../../domain/useCases/login.useCase';
 import { LogoutUseCase } from '../../domain/useCases/logout.useCase';
 import { RefreshTokenUseCase } from '../../domain/useCases/refresh-token.useCase';
 import { RegisterUseCase } from '../../domain/useCases/register.useCase';
+import { UpdateMeUseCase } from '../../domain/useCases/update-me.useCase';
 import { RegisterDto } from '../dtos/Register.dto';
+import { ChangeMyPasswordDto } from '../dtos/change-my-password.dto';
 import { LoginDto } from '../dtos/login.dto';
+import { MeDto } from '../dtos/me.dto';
 import { AuthenticateMiddleware } from '../middlewares/authenticate.middleware';
 import { RefreshTokenMiddleware } from '../middlewares/refresh-token.middleware';
 import { AuthTransform } from '../transformers/Auth.transform';
@@ -25,6 +29,8 @@ type Dependencies = {
     registerUseCase: RegisterUseCase,
     logoutUseCase: LogoutUseCase,
     refreshTokenUseCase: RefreshTokenUseCase,
+    updateMeUseCase: UpdateMeUseCase,
+    changeMyPasswordUseCase: ChangeMyPasswordUseCase
 }
 
 @route('/auth')
@@ -36,9 +42,11 @@ export default class AuthController
     private readonly registerUseCase: RegisterUseCase;
     private readonly logoutUseCase: LogoutUseCase;
     private readonly refreshTokenUseCase: RefreshTokenUseCase;
+    private readonly updateMeUseCase: UpdateMeUseCase;
+    private readonly changeMyPasswordUseCase: ChangeMyPasswordUseCase;
 
 
-    constructor({ config, loginUseCase, registerUseCase, logoutUseCase, refreshTokenUseCase }: Dependencies)
+    constructor({ config, loginUseCase, registerUseCase, logoutUseCase, refreshTokenUseCase, updateMeUseCase, changeMyPasswordUseCase }: Dependencies)
     {
         this.responder = new Responder();
         this.config = config;
@@ -46,6 +54,8 @@ export default class AuthController
         this.registerUseCase = registerUseCase;
         this.logoutUseCase = logoutUseCase;
         this.refreshTokenUseCase = refreshTokenUseCase;
+        this.updateMeUseCase = updateMeUseCase;
+        this.changeMyPasswordUseCase = changeMyPasswordUseCase;
     }
 
     @GET()
@@ -55,6 +65,18 @@ export default class AuthController
     {
         const container: AwilixContainer = (req as any).container;
         return await this.responder.send(container.resolve('authUser'), req, res, StatusCode.HTTP_OK, new UserTransform());
+    }
+
+    @PUT()
+    @route('/me')
+    @before([AuthenticateMiddleware()])
+    async updateMe(req: Request, res: Response)
+    {
+        const dto = new MeDto(req.body);
+        await DtoValidator.handle([dto]);
+        const data = await this.updateMeUseCase.handle(dto);
+
+        return await this.responder.send(data, req, res, StatusCode.HTTP_OK, new UserTransform());
     }
 
     @POST()
@@ -133,5 +155,16 @@ export default class AuthController
             });
 
         return await this.responder.send(data, req, res, StatusCode.HTTP_CREATED, new AuthTransform());
+    }
+
+    @PATCH()
+    @route('/change-my-password')
+    @before([AuthenticateMiddleware()])
+    async changeMyPassword(req: Request & { refreshToken: string }, res: Response)
+    {
+        const dto = new ChangeMyPasswordDto(req.body);
+        await DtoValidator.handle([dto]);
+        const data = await this.changeMyPasswordUseCase.handle(dto);
+        return await this.responder.send(data, req, res, StatusCode.HTTP_OK, new UserTransform());
     }
 }

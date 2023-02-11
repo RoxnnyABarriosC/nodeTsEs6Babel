@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from 'uuid';
 import { CloneDeepMap } from '../../utils/clone-deep-map';
 
-export abstract class BaseEntity
+export abstract class BaseEntity<T = any>
 {
     protected _id: string;
     public createdAt: Date;
@@ -35,7 +35,7 @@ export abstract class BaseEntity
         return clone;
     }
 
-    build<T = any>(partial: Partial<T>)
+    build(partial: Partial<T>)
     {
         Object.assign(this, partial);
     }

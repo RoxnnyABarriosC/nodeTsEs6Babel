@@ -11,6 +11,7 @@ export class UserMinimalDataTransform extends Transformer
 
         return {
             id: user.Id,
+            userName: user.userName,
             fullName: user.fullName,
             email: user.email,
             gender: user.gender,

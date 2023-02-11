@@ -12,10 +12,12 @@ import hpropagate from 'hpropagate';
 import * as process from 'process';
 import { configuration } from './config/configuration';
 import { AuthService } from './modules/auth/domain/services/auth.service';
+import { ChangeMyPasswordUseCase } from './modules/auth/domain/useCases/change-my-password.useCase';
 import { LoginUseCase } from './modules/auth/domain/useCases/login.useCase';
 import { LogoutUseCase } from './modules/auth/domain/useCases/logout.useCase';
 import { RefreshTokenUseCase } from './modules/auth/domain/useCases/refresh-token.useCase';
 import { RegisterUseCase } from './modules/auth/domain/useCases/register.useCase';
+import { UpdateMeUseCase } from './modules/auth/domain/useCases/update-me.useCase';
 import { ItemService } from './modules/item/domain/services/item.service';
 import { DeleteItemUseCase } from './modules/item/domain/useCases/delete-item.useCase';
 import { GetItemUseCase } from './modules/item/domain/useCases/get-item.useCase';
@@ -60,6 +62,8 @@ async function bootstrap(): Promise<string>
         registerUseCase: asClass(RegisterUseCase),
         logoutUseCase: asClass(LogoutUseCase),
         refreshTokenUseCase: asClass(RefreshTokenUseCase),
+        updateMeUseCase: asClass(UpdateMeUseCase),
+        changeMyPasswordUseCase: asClass(ChangeMyPasswordUseCase),
         // Repositories
         // Services
         authService: asClass(AuthService).singleton()
@@ -95,7 +99,8 @@ async function bootstrap(): Promise<string>
 
     const infrastructure = {
         uniqueService: asClass(UniqueService).singleton(),
-        config: asValue(config)
+        config: asValue(config),
+        authUser: asValue({})
     };
 
     const container = createContainer()
